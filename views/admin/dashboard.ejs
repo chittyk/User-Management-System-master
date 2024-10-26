@@ -1,0 +1,97 @@
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Admin Dashboard</h1>
+
+    <!-- User Table -->
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Sl. No</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone No</th>
+                <th colspan="2" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (users.length > 0) { %>
+                <% for (let i = 0; i < users.length; i++) { %>
+                <tr>
+                    <td>
+                        <%= i+1 %>
+
+                    </td>
+                    <td class="text-center">
+                        <img src="/userImages/<%= users[i].image %>" alt="<%= users[i].image %>" class="img-thumbnail" style="width: 50px; height: 50px;">
+                    </td>       
+                    <td><%= users[i].name %></td>
+                    <td><%= users[i].email %></td>
+                    <td><%= users[i].mobile %></td>
+                    <td class="text-center">
+                        <a href="/admin/edit-user?id=<%= users[i]._id %>" class="btn btn-sm">
+                            <i class="bi bi-pencil-square text-success"></i>
+                        </a>
+                        <a href="/admin/delete-user?id=<%= users[i]._id %>" class="btn btn-sm delete">
+                            <i class="bi bi-trash3 text-danger trash-icon"></i>
+                        </a>
+                    </td>
+                </tr>
+                <% } %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6" class="text-center text-danger">User not found</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <!-- Success Message -->
+    <% if (message) { %>
+        <div class="alert alert-success" role="alert">
+            <%= message %>
+        </div>
+        <script>
+            if (window.history.replaceState) {
+                const url = new URL(window.location);
+                url.searchParams.delete('message');
+                window.history.replaceState(null, '', url);
+            }
+        </script>
+    <% } %>
+
+    <!-- Buttons at the bottom -->
+    <div class="d-flex justify-content-center mt-4">
+        <a href="/admin/home" class="btn btn-secondary me-2">Go To Home</a>
+        <a href="/admin/new-user" class="btn btn-primary ms-2">Add New User</a>
+    </div>
+</div>
+
+<style>
+    .img-thumbnail {
+        border-radius: 5px; /* Round the image corners */
+    }
+
+    /* Custom spacing between action buttons */
+    .action-links a {
+        margin-right: 5px;
+    }
+
+    /* Centered 'No users' message */
+    .text-danger {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    /* Custom button styling */
+    .btn-primary, .btn-secondary {
+        width: 150px; /* Consistent button width */
+    }
+
+    /* Styling for the trash icon */
+    .btn-danger i {
+        margin-right: 5px; /* Space between the icon and text if needed */
+    }
+</style>
+
+<!-- Bootstrap Icons CDN (if not already included) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">

@@ -1,0 +1,32 @@
+body {
+    background-color: #000; /* Black background */
+}
+
+.container-fluid {
+    background-color: transparent; /* No background for container */
+}
+
+.form {
+    background-color: #ffffff; /* White background for the form */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for contrast */
+}
+
+.label {
+    color: #58bc82; /* Change label color if needed */
+}
+
+.btn-dark {
+    background-color: #343a40; /* Dark button color */
+    border: none; /* Remove border */
+}
+
+.btn-dark:hover {
+    background-color: #58bc82; /* Change color on hover */
+    color: #ffffff; /* White text on hover */
+}
+
+.text-danger {
+    font-size: 0.9rem; /* Adjust font size for error messages */
+}

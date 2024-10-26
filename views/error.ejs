@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error <%= errorCode %></title>
+    <link rel="stylesheet" href="/styles/error.css"> <!-- Include your CSS file here -->
+</head>
+<body>
+    <section class="error-page">
+        <div class="error-container">
+            <h2 class="error-code">Error <%= errorCode %></h2>
+            <p class="error-message"><%= message %></p>
+            <a href="/" class="btn btn-primary" id="goHomeBtn">Go to Home</a>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('goHomeBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/';
+        });
+
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 1)) {
+                window.location.href = '/';
+            }
+        });
+
+        window.addEventListener('popstate', function() {
+            if (document.referrer.includes('/admin')) {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

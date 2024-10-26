@@ -1,0 +1,110 @@
+<div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-4">
+            <form action="" method="post" id="loginForm" onsubmit="return validateForm();" class="form shadow bg-white p-4 rounded">
+                <h1 class="text-center mb-4">Admin Login</h1>
+                
+                <!-- Centered Alert Box for Error Messages -->
+                <% if (typeof message !== 'undefined') { %>
+                    <div class="alert alert-warning text-center">
+                        <%= message %>
+                    </div>
+                <% } %>
+
+                <!-- Email Field -->
+                <div class="input-grp mb-3">
+                    <label for="log-email" class="label text-success">Email</label>
+                    <input type="email" class="form-control" id="log-email" name="email" placeholder="Enter your email" onkeyup="validateEmail()" required>
+                    <span id="email-error" class="text-danger"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="input-grp mb-3">
+                    <label for="log-password" class="label text-success">Password</label>
+                    <input type="password" class="form-control" id="log-password" name="password" placeholder="Enter your password" onkeyup="validatePassword()" required>
+                    <span id="password-error" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-dark rounded-pill w-100">Login</button>
+                <span id="submit-error" class="text-danger mt-2"></span>
+            </form>
+
+            <!-- Links for User Registration and User Login -->
+            <div class="mt-3 text-center">
+                <a href="/register" class="text-decoration-none text-white">User Registration</a><br>
+                <a href="/login" class="text-decoration-none text-white">User Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var emailError = document.getElementById('email-error');
+        var passwordError = document.getElementById('password-error');
+        var submitError = document.getElementById('submit-error');
+
+        function validateEmail() {
+            var email = document.getElementById('log-email').value.trim();
+            if (email.length == 0) {
+                emailError.innerHTML = 'Email is required';
+                return false;
+            }
+            if (/\s/.test(email)) {
+                emailError.innerHTML = 'Email should not contain white spaces';
+                return false;
+            }
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email.match(emailPattern)) {
+                emailError.innerHTML = 'Please enter a valid email address';
+                return false;
+            }
+            emailError.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i>';
+            return true;
+        }
+
+        function validatePassword() {
+            var password = document.getElementById('log-password').value;
+            if (password.length == 0) {
+                passwordError.innerHTML = 'Password is required';
+                return false;
+            }
+            
+            if (password.length < 8) {
+                passwordError.innerHTML = 'Password must be at least 8 digits long';
+                return false;
+            }
+            passwordError.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i>';
+            return true;
+        }
+
+        function validateForm() {
+            var isEmailValid = validateEmail();
+            var isPasswordValid = validatePassword();
+
+            if (!isEmailValid || !isPasswordValid) {
+                submitError.innerHTML = 'Please fix the errors above before submitting';
+                return false;
+            }
+
+            submitError.innerHTML = '';
+            return true;
+        }
+
+        (function() {
+            function clearUrlParameters() {
+                if (window.history.replaceState) {
+                    var cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }
+            }
+
+            clearUrlParameters();
+
+            window.onpageshow = function(event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            };
+
+            document.getElementById('loginForm').reset();
+        })();
+    </script>

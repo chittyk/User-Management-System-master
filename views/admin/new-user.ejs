@@ -1,0 +1,239 @@
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h1 class="text-center mb-4">Add New User</h1>
+
+        <form id="registration-form" action="/register" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+            <div class="row">
+                <!-- Name Field -->
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" onkeyup="validateName()" required>
+                        <label for="name">Name</label>
+                        <small id="name-error" class="text-success"></small>
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" onkeyup="validateEmail()" required>
+                        <label for="email">Email</label>
+                        <small id="email-error" class="text-danger"></small>
+                    </div>
+                </div>
+
+                <!-- Mobile Field -->
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="mno" name="mno" placeholder="Enter your mobile number" onkeyup="validateMobile()" required>
+                        <label for="mno">Mobile</label>
+                        <small id="mobile-error" class="text-success"></small>
+                    </div>
+                </div>
+
+                <!-- Profile Image Field -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="image" class="form-label">Profile Image</label>
+                        <input type="file" class="form-control" id="image" name="image" required>
+                    </div>
+                </div>
+
+                <!-- Single Checkbox for Admin Role -->
+<div class="col-md-12 mb-3">
+    <div class="form-check">
+        <input class="form-check-input bg-success" type="checkbox" name="role" id="role" value="admin">
+        <label class="form-check-label" for="role"> Is Admin</label>
+    </div>
+    <small id="role-error" class="text-danger"></small>
+</div>
+
+<!-- Additional Bootstrap styles to reduce space between checkbox and label -->
+<style>
+    .form-check-input {
+        margin-right: 10px; /* Reduce the space between checkbox and label */
+    }
+
+    .form-check-label {
+        margin-left: -710px; /* Ensure label is next to checkbox */
+    }
+</style>
+
+
+                <!-- Password Field -->
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" onkeyup="validatePassword()" required>
+                        <label for="password">Password</label>
+                        <small id="password-error" class="text-danger"></small>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary w-50 py-2">Register</button>
+                    <small id="submit-error" class="text-danger d-block mt-2"></small>
+                </div>
+            </div>
+        </form>
+
+        <!-- Flash Message for Registration -->
+        <% if (message) { %>
+        <div class="alert alert-info mt-4" role="alert">
+            <%= message %>
+        </div>
+        <script>
+            if (window.history.replaceState) {
+                const url = new URL(window.location);
+                url.searchParams.delete('message');
+                window.history.replaceState(null, '', url);
+            }
+        </script>
+        <% } %>
+
+    
+    </div>
+</div>
+
+<!-- Validation Scripts -->
+<script>
+
+function validateRole() {
+    var isRoleChecked = document.getElementById('role').checked;
+    var roleError = document.getElementById('role-error');
+
+    // If the checkbox is checked, it's Admin; if not, it's User
+    if (isRoleChecked) {
+        roleError.innerHTML = '<i class="fa-solid fa-circle-check"></i> Admin selected';
+    } else {
+        roleError.innerHTML = '<i class="fa-solid fa-circle-check"></i> User selected';
+    }
+    return true; // You can return true or false depending on further validation
+}
+
+
+function validateName() {
+    var name = document.getElementById('name').value.trim();
+    var nameError = document.getElementById('name-error');
+
+    if (name.length === 0) {
+        nameError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Name is required';  // Cross mark
+        nameError.classList.remove('text-success');
+        nameError.classList.add('text-success');
+        return false;
+    }
+
+    if (/\d/.test(name)) {
+        nameError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Name should not contain numbers';
+        nameError.classList.remove('text-success');
+        nameError.classList.add('text-success');
+        return false;
+    }
+
+    // If validation passes, show blue tick mark
+    nameError.innerHTML = '<i class="fa-solid fa-circle-check"></i> Name is valid';
+    nameError.classList.remove('text-danger');
+    nameError.classList.add('text-success');  // Blue color for success
+    return true;
+}
+
+
+function validateEmail() {
+    var email = document.getElementById('email').value.trim();
+    var emailError = document.getElementById('email-error');
+
+    if (email.length === 0) {
+        emailError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Email is required';
+        emailError.classList.remove('text-success');
+        emailError.classList.add('text-success');
+        return false;
+    }
+
+    if (/\s/.test(email)) {
+        emailError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Email should not contain white spaces';
+        emailError.classList.remove('text-success');
+        emailError.classList.add('text-danger');
+        return false;
+    }
+
+    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email.match(emailPattern)) {
+        emailError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Email is invalid';
+        emailError.classList.remove('text-success');
+        emailError.classList.add('text-danger');
+        return false;
+    }
+
+    emailError.innerHTML = '<i class="fa-solid fa-circle-check"></i> Email is valid';
+    emailError.classList.remove('text-danger');
+    emailError.classList.add('text-primary');
+    return true;
+}
+
+function validateMobile() {
+    var mobile = document.getElementById('mno').value.trim();
+    var mobileError = document.getElementById('mobile-error');
+
+    if (mobile.length === 0) {
+        mobileError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Mobile number is required';
+        mobileError.classList.remove('text-success');
+        mobileError.classList.add('text-danger');
+        return false;
+    }
+
+    var mobilePattern = /^[0-9]{10}$/;
+    if (!mobile.match(mobilePattern)) {
+        mobileError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Mobile number must be 10 digits long';
+        mobileError.classList.remove('text-success');
+        mobileError.classList.add('text-danger');
+        return false;
+    }
+
+    mobileError.innerHTML = '<i class="fa-solid fa-circle-check"></i> Mobile number is valid';
+    mobileError.classList.remove('text-danger');
+    mobileError.classList.add('text-success');
+    return true;
+}
+
+function validatePassword() {
+    var password = document.getElementById('password').value;
+    var passwordError = document.getElementById('password-error');
+
+    if (password.length === 0) {
+        passwordError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Password is required';
+        passwordError.classList.remove('text-success');
+        passwordError.classList.add('text-danger');
+        return false;
+    }
+
+    if (password.length < 8) {
+        passwordError.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Password must be at least 8 characters long';
+        passwordError.classList.remove('text-success');
+        passwordError.classList.add('text-danger');
+        return false;
+    }
+
+    // Show success tick for valid password
+    passwordError.innerHTML = '<i class="fa-solid fa-circle-check"></i> Password is valid';
+    passwordError.classList.remove('text-danger');
+    passwordError.classList.add('text-success');
+    return true;
+}
+
+
+function validateForm() {
+    var isNameValid = validateName();
+    var isEmailValid = validateEmail();
+    var isMobileValid = validateMobile();
+    var isPasswordValid = validatePassword();
+
+    if (!isNameValid || !isEmailValid || !isMobileValid || !isPasswordValid) {
+        document.getElementById('submit-error').innerHTML = 'Please fix the errors before submitting';
+        return false;
+    }
+
+    document.getElementById('submit-error').innerHTML = '';
+    return true;
+}
+
+</script>

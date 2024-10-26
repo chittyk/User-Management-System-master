@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>User Profile</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-card {
+            max-width: 800px; /* Increase maximum width of the card */
+            width: 100%; /* Ensure it takes full width on smaller screens */
+            margin: 0 auto; /* Center the card horizontally */
+            border-radius: 20px; /* Make the card corners rounded */
+        }
+        .profile-image {
+            width: 200px; /* Increase width for the image */
+            height: 200px; /* Increase height for the image */
+            object-fit: cover; /* Maintain aspect ratio */
+            border-radius: 50%; /* Make the image rounded */
+        }
+        .action-links a {
+            margin: 0 10px;
+            color: #007bff;
+        }
+        .action-links a:hover {
+            text-decoration: underline;
+        }
+        .table td {
+            vertical-align: middle; /* Center align table content vertically */
+        }
+        .card-body {
+            padding: 2rem; /* Increase padding for more space in the card body */
+        }
+        h5.card-title {
+            font-size: 1.75rem; /* Increase the font size of the title */
+        }
+    </style>
+</head>
+<body>
+
+<div class=" d-flex justify-content-center mt-5">
+    <div class="card profile-card mb-3">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                <img class="img-fluid rounded" src="userImages/<%= user.image %>" alt="<%= user.name %>'s Image">
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title text-center"><%= user.name %></h5><br><br>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td><strong>Name</strong></td>
+                                <td><%= user.name %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td><%= user.email %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Contact</strong></td>
+                                <td><%= user.mobile %></td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                    <div class="action-links text-center"><br><br>  
+                        <a href="/edit?id=<%= user._id %>" class="btn btn-primary text-light btn-lg">Edit</a>
+                        <a href="/logout" class="btn btn-danger text-light btn-lg">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

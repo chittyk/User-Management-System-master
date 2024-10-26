@@ -1,0 +1,155 @@
+<body>
+  <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-6 col-lg-4">
+      <form class="form p-4 shadow-lg" id="registration-form" action="/register" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <h2 class="text-center mb-4">User Registration</h2>
+
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" onkeyup="validateName()" required />
+          <span id="name-error" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" onkeyup="validateEmail()" required />
+          <span id="email-error" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+          <label for="mno" class="form-label">Mobile</label>
+          <input type="text" class="form-control" id="mno" name="mno" placeholder="Enter your mobile number" onkeyup="validateMobile()" required />
+          <span id="mobile-error" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Profile Image</label>
+          <input type="file" class="form-control" id="image" name="image" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" onkeyup="validatePassword()" required />
+          <span id="password-error" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-dark w-100">Register</button>
+        <span id="submit-error" class="text-danger d-block mt-2"></span>
+
+        <div class="mt-3 text-center">
+          Already have an account? <a href="/login">Login here</a>
+        </div>
+
+        <% if (message) { %>
+        <div class="alert alert-info mt-3">
+          <%= message %>
+        </div>
+        <script>
+          if (window.history.replaceState) {
+            const url = new URL(window.location);
+            url.searchParams.delete('message');
+            window.history.replaceState(null, '', url);
+          }
+        </script>
+        <% } %>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript for Live Error Detection -->
+  <script>
+    function validateName() {
+      const name = document.getElementById("name");
+      const nameError = document.getElementById("name-error");
+
+      if (name.value.length === 0) {
+        nameError.textContent = "Name cannot be empty";
+        name.classList.add("input-error");
+        return false;
+      } else {
+        nameError.textContent = "";
+        name.classList.remove("input-error");
+        return true;
+      }
+    }
+
+    function validateEmail() {
+      const email = document.getElementById("email");
+      const emailError = document.getElementById("email-error");
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+      if (email.value.length === 0) {
+        emailError.textContent = "Email cannot be empty";
+        email.classList.add("input-error");
+        return false;
+      } else if (!email.value.match(emailPattern)) {
+        emailError.textContent = "Invalid email format";
+        email.classList.add("input-error");
+        return false;
+      } else {
+        emailError.textContent = "";
+        email.classList.remove("input-error");
+        return true;
+      }
+    }
+
+    function validateMobile() {
+      const mobile = document.getElementById("mno");
+      const mobileError = document.getElementById("mobile-error");
+
+      if (mobile.value.length === 0) {
+        mobileError.textContent = "Mobile number cannot be empty";
+        mobile.classList.add("input-error");
+        return false;
+      } else if (mobile.value.length < 10 || mobile.value.length > 10 || isNaN(mobile.value)) {
+        mobileError.textContent = "Invalid mobile number";
+        mobile.classList.add("input-error");
+        return false;
+      } else {
+        mobileError.textContent = "";
+        mobile.classList.remove("input-error");
+        return true;
+      }
+    }
+
+    function validatePassword() {
+      const password = document.getElementById("password");
+      const passwordError = document.getElementById("password-error");
+
+      if (password.value.length < 8) {
+        passwordError.textContent = "Password must be at least 8 characters long";
+        password.classList.add("input-error");
+        return false;
+      } else {
+        passwordError.textContent = "";
+        password.classList.remove("input-error");
+        return true;
+      }
+    }
+
+    function validateForm() {
+      const nameValid = validateName();
+      const emailValid = validateEmail();
+      const mobileValid = validateMobile();
+      const passwordValid = validatePassword();
+
+      if (nameValid && emailValid && mobileValid && passwordValid) {
+        return true;
+      } else {
+        document.getElementById("submit-error").textContent = "Please correct the errors above.";
+        return false;
+      }
+    }
+  </script>
+
+  <style>
+    .input-error {
+      border: 2px solid red !important;
+      background-color: #ffcccc; /* Light red background */
+    }
+    .text-danger {
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+    }
+  </style>
+</body>

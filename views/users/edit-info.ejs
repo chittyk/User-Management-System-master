@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Edit User Info</title>
+    <style>
+        .container {
+            max-width: 600px; /* Limit container width */
+            margin-top: 50px;
+        }
+        .profile-img img {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        .form-group .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+        .form-group .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Edit <%= user.name %></h1>
+        <div class="profile-img text-center">
+            <img src="userImages/<%= user.image %>" width="100px" height="100px" alt="<%= user.image %>">
+        </div>
+        <form id="edit-form" action="" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="form-control" value="<%= user.name %>" placeholder="Enter your name" required oninput="validateName()">
+                <span id="name-error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" value="<%= user.email %>" placeholder="Enter your email" required oninput="validateEmail()">
+                <span id="email-error" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="mno">Mobile:</label>
+                <input type="text" id="mno" name="mno" class="form-control" value="<%= user.mobile %>" placeholder="Enter your mobile number" required oninput="validateMobile()">
+                <span id="mobile-error" class="error"></span>
+            </div>
+
+            <input type="hidden" name="user_id" value="<%= user._id %>">
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-primary" value="Update User">
+                <span id="submit-error" class="error d-block mt-2"></span>
+            </div>
+        </form>
+        <div class="actions text-center mt-3">
+            <a href="/home" class="btn btn-secondary">Go to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function validateName() {
+            var name = document.getElementById('name').value.trim();
+            var nameError = document.getElementById('name-error');
+            if (name.length === 0) {
+                nameError.innerHTML = 'Name is required';
+                return false;
+            }
+            if (/\d/.test(name)) {
+                nameError.innerHTML = 'Name should not contain numbers';
+                return false;
+            }
+            nameError.innerHTML = '<i class="fa-solid fa-circle-check success"></i> Valid name';
+            return true;
+        }
+
+        function validateEmail() {
+            var email = document.getElementById('email').value.trim();
+            var emailError = document.getElementById('email-error');
+            if (email.length === 0) {
+                emailError.innerHTML = 'Email is required';
+                return false;
+            }
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                emailError.innerHTML = 'Email is invalid';
+                return false;
+            }
+            emailError.innerHTML = '<i class="fa-solid fa-circle-check success"></i> Valid email';
+            return true;
+        }
+
+        function validateMobile() {
+            var mobile = document.getElementById('mno').value.trim();
+            var mobileError = document.getElementById('mobile-error');
+            if (mobile.length === 0) {
+                mobileError.innerHTML = 'Mobile number is required';
+                return false;
+            }
+            var mobilePattern = /^[0-9]{10}$/;
+            if (!mobilePattern.test(mobile)) {
+                mobileError.innerHTML = 'Mobile number must be 10 digits long';
+                return false;
+            }
+            mobileError.innerHTML = '<i class="fa-solid fa-circle-check success"></i> Valid mobile number';
+            return true;
+        }
+
+        function validateForm() {
+            var isNameValid = validateName();
+            var isEmailValid = validateEmail();
+            var isMobileValid = validateMobile();
+
+            if (!isNameValid || !isEmailValid || !isMobileValid) {
+                document.getElementById('submit-error').innerHTML = 'Please fix the errors above before submitting';
+                return false;
+            }
+
+            document.getElementById('submit-error').innerHTML = '';
+            return true;
+        }
+    </script>
+
+    <!-- FontAwesome for success icons (optional) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>

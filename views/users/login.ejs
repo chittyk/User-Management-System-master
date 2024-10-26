@@ -1,0 +1,105 @@
+<body>
+    <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-4">
+            <form action="/login" method="post" onsubmit="return validateForm();" class="form shadow p-4 rounded">
+                <h1 class="text-center text-dark mb-4">Login</h1>
+                <!-- <a href="hello">say heloo</a> -->
+
+                <!-- Centered Alert Box for Error Messages -->
+                <% if (typeof message !== 'undefined' && message) { %>
+                    <div class="alert alert-warning text-center">
+                        <%= message %>
+                    </div>
+                <% } %>
+
+                <!-- Email Field -->
+                <span class="input-span">
+                    <label for="log-email" class="label">Email</label>
+                    <input type="email" class="form-control" id="log-email" name="email" placeholder="Enter your email"
+                        onkeyup="validateEmail()" required>
+                    <span id="email-error" class="text-danger"></span>
+                </span>
+
+                <!-- Password Field -->
+                <span class="input-span">
+                    <label for="log-password" class="label">Password</label>
+                    <input type="password" class="form-control" id="log-password" name="password"
+                        placeholder="Enter your password" onkeyup="validatePassword()" required>
+                    <span id="password-error" class="text-danger"></span>
+                </span>
+
+                <!-- Forgot Password Link -->
+                <span class="span"><a href="#">Forgot password?</a></span>
+
+                <!-- Submit Button (Using Bootstrap classes for dark and rounded) -->
+                <button type="submit" class="btn btn-dark rounded-pill w-100">Log in</button>
+                <span id="submit-error" class="text-danger mt-2"></span>
+            </form>
+
+            <!-- Links for Registration and Admin Login -->
+            <div class="mt-3 text-center">
+                <span class="span text-white">Don't have an account? <a href="/register" class="text-decoration-none">Sign
+                        up</a></span>
+                <h1></h1>
+                <a href="/admin" class="text-decoration-none">Admin Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Form Validation -->
+    <script>
+        var emailError = document.getElementById('email-error');
+        var passwordError = document.getElementById('password-error');
+        var submitError = document.getElementById('submit-error');
+
+        function validateEmail() {
+            var email = document.getElementById('log-email').value.trim();
+            if (email.length == 0) {
+                emailError.innerHTML = 'Email is required';
+                return false;
+            }
+            if (/\s/.test(email)) {
+                emailError.innerHTML = 'Email should not contain white spaces';
+                return false;
+            }
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email.match(emailPattern)) {
+                emailError.innerHTML = 'Please enter a valid email address';
+                return false;
+            }
+            emailError.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i>';
+            return true;
+        }
+
+        function validatePassword() {
+            var password = document.getElementById('log-password').value;
+            if (password.length == 0) {
+                passwordError.innerHTML = 'Password is required';
+                return false;
+            }
+            
+            if (password.length < 8) {
+                passwordError.innerHTML = 'Password must be at least 8 digits long';
+                return false;
+            }
+            passwordError.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i>';
+            return true;
+        }
+
+        function validateForm() {
+            var isEmailValid = validateEmail();
+            var isPasswordValid = validatePassword();
+
+            if (!isEmailValid || !isPasswordValid) {
+                submitError.innerHTML = 'Please fix the errors above before submitting';
+                return false;
+            }
+
+            submitError.innerHTML = '';
+            return true;
+        }
+    </script>
+
+    <!-- Font Awesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>

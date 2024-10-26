@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/form/edituser.css" />
+</head>
+<body>
+
+<div class="container">
+    
+    <h1>Edit <%= user.name %></h1>
+
+    <form action="/admin/edit-user" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <input type="hidden" id="id" name="id" value="<%= user._id %>">
+        <input type="text" id="name" name="name" placeholder="Enter name" value="<%= user.name %>" required>
+        <span id="name-error" class="text-danger"></span>
+        
+        <input type="email" id="email" name="email" placeholder="Enter email" value="<%= user.email %>" required>
+        <span id="email-error" class="text-danger"></span>
+
+        <input type="text" id="mno" name="mno" placeholder="Enter mobile" value="<%= user.mobile %>" required>
+        <span id="mno-error" class="text-danger"></span>
+
+        <input type="file" id="image" name="image">
+        
+        <input type="submit" value="UPDATE">
+    </form>
+
+    <a href="/admin/dashboard" class="back-link">Go To Dashboard</a>
+</div>
+
+<script>
+    // Error elements
+    var nameError = document.getElementById('name-error');
+    var emailError = document.getElementById('email-error');
+    var mnoError = document.getElementById('mno-error');
+
+    // Name validation
+    function validateName() {
+        let name = document.getElementById('name').value;
+        if (name.trim() === "") {
+            nameError.innerHTML = 'Name is required';
+            return false;
+        } else {
+            nameError.innerHTML = '';
+            return true;
+        }
+    }
+
+    // Email validation
+    function validateEmail() {
+        let email = document.getElementById('email').value;
+        let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailPattern.test(email)) {
+            emailError.innerHTML = 'Invalid email address';
+            return false;
+        } else {
+            emailError.innerHTML = '';
+            return true;
+        }
+    }
+
+    // Mobile number validation
+    function validateMobile() {
+        let mno = document.getElementById('mno').value;
+        let mnoPattern = /^[0-9]{10}$/; // Assuming a 10-digit mobile number
+        if (!mnoPattern.test(mno)) {
+            mnoError.innerHTML = 'Mobile number must be 10 digits';
+            return false;
+        } else {
+            mnoError.innerHTML = '';
+            return true;
+        }
+    }
+
+    // Form validation
+    function validateForm() {
+        let validName = validateName();
+        let validEmail = validateEmail();
+        let validMobile = validateMobile();
+
+        // Return true only if all validations pass
+        return validName && validEmail && validMobile;
+    }
+
+    // Adding event listeners for real-time validation
+    document.getElementById('name').addEventListener('input', validateName);
+    document.getElementById('email').addEventListener('input', validateEmail);
+    document.getElementById('mno').addEventListener('input', validateMobile);
+</script>
+<script>
+    // Error elements
+    var nameError = document.getElementById('name-error');
+    var emailError = document.getElementById('email-error');
+    var mnoError = document.getElementById('mno-error');
+
+    // Name validation
+    function validateName() {
+        let name = document.getElementById('name').value;
+        let namePattern = /^[A-Za-z\s]+$/; // Regex to allow only letters and spaces
+
+        if (name.trim() === "") {
+            nameError.innerHTML = 'Name is required';
+            return false;
+        } else if (!namePattern.test(name)) {
+            nameError.innerHTML = 'Name cannot contain numbers or special characters';
+            return false;
+        } else {
+            nameError.innerHTML = '';
+            return true;
+        }
+    }
+
+    // Email validation
+    function validateEmail() {
+        let email = document.getElementById('email').value;
+        let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailPattern.test(email)) {
+            emailError.innerHTML = 'Invalid email address';
+            return false;
+        } else {
+            emailError.innerHTML = '';
+            return true;
+        }
+    }
+
+    // Mobile number validation
+    function validateMobile() {
+        let mno = document.getElementById('mno').value;
+        let mnoPattern = /^[0-9]{10}$/; // Assuming a 10-digit mobile number
+
+        if (!mnoPattern.test(mno)) {
+            mnoError.innerHTML = 'Mobile number must be 10 digits';
+            return false;
+        } else if (/^(\d)\1{9}$/.test(mno)) {
+            // Regex to check if all digits are the same
+            mnoError.innerHTML = 'Mobile number cannot be all the same digits';
+            return false;
+        } else {
+            mnoError.innerHTML = '';
+            return true;
+        }
+    }
+
+    // Form validation
+    function validateForm() {
+        let validName = validateName();
+        let validEmail = validateEmail();
+        let validMobile = validateMobile();
+
+        // Return true only if all validations pass
+        return validName && validEmail && validMobile;
+    }
+
+    // Adding event listeners for real-time validation
+    document.getElementById('name').addEventListener('input', validateName);
+    document.getElementById('email').addEventListener('input', validateEmail);
+    document.getElementById('mno').addEventListener('input', validateMobile);
+</script>
+
+</body>
+</html>
